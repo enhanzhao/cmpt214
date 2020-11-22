@@ -1,0 +1,109 @@
+//enz889 Enhan Zhao 11097118 cmpt214 a3 external documentation
+
+
+****************Documentation for cgr.c***********************
+
+-cgr.c is a program that reads a string of characters that potentially contains the characters
+ATGCatgc, each representing a DNA nucleotide. On a graph where each corner is one of ATGC, starting from the center (1/2, 1/2) the midpoint between the previous midpoint and the next point is calculated and the midpoint is plotted. If the character is not one of ATGCatgc, then it is ignored
+and the next chatacter is calculated. This program takes 1 option on the commandline that is an
+integer of power of 2 which is the scale which the plot will be expanded to. For the pupose of this assignment, the scale is either 16, 32, or 64. This program will take the string of characters from
+standard input. 
+
+
+////////////////Global variables//////////////////
+
+int Scale
+-Scale stores the scale that will determine how much the graph and the coordinates will be "blown up".
+
+char **Plot
+-Plot is type pointer to pointer to char. The memory of this multidimensional array is dynamically 
+allocated in the main function, initialized to spaces, and acts as a plot for all the midpoints. Has the dimensions Scale*Scale.
+
+////////////////Data types//////////////////
+
+struct coord_t
+-coord_t is the smallest data structure in cgr.c. It represents a fraction value for a single cooridinate on the graph with value in the range of 0/1 and 1/1. The 2 components n and q are both 
+type uint64_t; they are the numerator (n) and denominator (q) of the fraction representation. This 
+value will be scaled up in scale_coord() by a factor of 16, 32 or 64. 
+
+struct point_t
+-point_t is the representation of a point on a graph in the form (x, y). Both x and y are of type
+coord_t. 
+
+struct ntide_t
+-this data structure will store the coordinates of each of the corner point ATGC. each of the 4 
+values are a point_t structure that prepresents a x and y value in fraction form. 
+
+///////////////Functions////////////////
+
+is_power_of_2(val)
+-this is a simmple function that takes an integer and returns a boolean depending on if the number
+is a power of 2. Returns true if val is a power of 2, false other wise. This is used to depermine 
+if the Scale read from the command line is a valid input. 
+
+mostSigBit(n)
+-this is a supplementary function made for the reduce_coord function. This determines what is the 
+highest bit representaion of a decimal in binary form. Ex: if n = 1, return 1. if n = 8, return 4.
+If n = 64, return 7.
+
+reduce_coord(old_cooord)
+-This function checks if the q value (denominator of the fraction) is equals to or higher than 
+2^63 by making use of mostSigBit. It then reduces both n and q of old_coord in half if it is higher. 
+This function prevents overflow in all functions that involves calculations. 
+
+reduce_point(old_point)
+-this function uses reduce_coord on both x and y values of a point_t data type and returns the reduced values if they need reducing. Other wise, the original point is returned. 
+
+initialize_plot()
+-this function initizlizes each element in the 2d array Plot to space characters. 
+
+print_plot()
+-this funtion prints the Scale*Scale 2d array stored in Plot, with the rows printed in reverse order. 
+It also adds the labels ATGC on the corners, as well as adding a boarder surrounding the plot. 
+
+scale_coord()
+-Scale up the coord_t fraction representation by a factor of Scale before the scaled up cooridinates are plotted. Since the q value of coord_t and the Scale are always going to be to the power of 2, at least one of those values will always cancel to 1. There are 3 possible outcomes: 
+	-Scale is the same as q: in this case they cancel out and n is returned.
+	-Scale is larger than q: q will be 1, the remaining of Scale is multiplied to n and returned. 
+	-Scale is smaller than q: Scale will be 1, n is divided by the remaining q and returned.
+
+plot_point(point)
+-plot the coordinate of point in the plot Plot as an asterisk. 
+
+determine_midpoint(pnt1, pnt2)
+-this function takes 2 point_t structurers and return the mid point of the 2 coordinates before it is scaled up and plotted. In order to apply the midpoint formula m = ((x2-x1)/2, (y2-y1)/2), the denominator (q) must be the same between x1 x2, and y1 y2. We can take advantage that pnt2 is one of AGTC, and the denominator (q) will always be 1. First, all pnt1 coordinates are doubles, this prevents small numbers rounding down to 0 during division. Then, scale up all values of pnt2 by q of pnt1 so the denominator for both points are equal. Lastly, the midpoint formula is applied and returned since the denominator is now equal. This function calls reducePoint() to avoid overflow. 
+
+cgr(in_point, in_char)
+-this function does the core work of the cgr function by calling other functions in thie program. This function contains the ntide_t sturcture that stores all the cooridinates of AGTC. 
+in_char is a character that is read from standard input, it is converted to uppercase. Based on in_char, the coordinate that matches in_char is extracted from ntide_t structure as the nextpoint. Then, the midpoint of this nextpoint and in_point(the previous nextpoint) is calculated and plotted. If the input is not one of AGTC, it is ignored and in_point is returned to be used for the next chatacter in string. 
+
+main(argc, char *argv[])
+-the main function for this program asserts that the value for Scale is valid (16, 32 or 64) before it is assigned to Scale. Then, the memory for Plot is dynamically allocated based on the value of Scale. After initializing the plot, starting from cooridinates (1/2, 1/2), cgr() is called on every character read in from standard in one at a time until the null byte is reached. Then Plot is printed with labels and boarders to standard out. Finally the memory for Plot is freed. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

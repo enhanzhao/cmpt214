@@ -1,0 +1,1 @@
+Invalid input, must be 16, 32 or 64.

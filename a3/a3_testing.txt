@@ -1,0 +1,405 @@
+//Enhan Zhao enz889 11097118 cmpt214 a3 testing
+
+//showing that cgr.c compliles without any errors/warnings on tuxworld
+enz889@tux7:~> gcc -Wall -Wextra -o cgr cgr.c
+enz889@tux7:~> 
+
+//Testing///////////////////////////////////////////////////////////////////////////
+
+//testing an invalid inputs on command line
+paul@daikon:~$ ./a.out 2 <<< "gaattc"
+Invalid input, must be 16, 32 or 64.
+paul@daikon:~$ ./a.out 7 <<< "gaattc"
+Invalid input, must be 16, 32 or 64.
+paul@daikon:~$ ./a.out 65 <<< "gaattc"
+Invalid input, must be 16, 32 or 64.
+paul@daikon:~$ ./a.out 44 < HUMHBB_raw.txt 
+Invalid input, must be 16, 32 or 64.
+paul@daikon:~$ ./a.out 128 <<< "gaattc"
+Invalid input, must be 16, 32 or 64.
+paul@daikon:~$ ./a.out -4 <<< "gaattc"
+Invalid input, must be 16, 32 or 64.
+
+//testing convert to upper is working with various upper and lower case.////////////
+//Expecting 8 points.
+
+paul@daikon:~$ ./a.out 16 <<< "gGaAcCtT"
+C+----------------+G
+ |                |
+ |              * |
+ |                |
+ |*           *   |
+ |                |
+ |                |
+ | *              |
+ |                |
+ |       *        |
+ |        *       |
+ |                |
+ |                |
+ |   *        *   |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+
+
+//testing finding midpoint between all cooridinates/////////////////////////////////
+//A
+paul@daikon:~$ ./a.out 16 <<< "aa"
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |    *           |
+ |                |
+ |  *             |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< "ac"
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |  *             |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |    *           |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< "at"
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |    *           |
+ |                |
+ |          *     |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< "ag"
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |          *     |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |    *           |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+
+//G/////////////////////////////////////////////////////////////////////////////////
+paul@daikon:~$ ./a.out 16 <<< "gg"
+C+----------------+G
+ |                |
+ |              * |
+ |                |
+ |            *   |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< "ga"
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |            *   |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |      *         |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< "gt"
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |            *   |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |              * |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< "gc"
+C+----------------+G
+ |                |
+ |      *         |
+ |                |
+ |            *   |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+
+//C/////////////////////////////////////////////////////////////////////////////////
+paul@daikon:~$ ./a.out 16 <<< cc
+C+----------------+G
+ |                |
+ |  *             |
+ |                |
+ |    *           |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< ct
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |    *           |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |          *     |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< ca
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |    *           |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |  *             |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< cg
+C+----------------+G
+ |                |
+ |          *     |
+ |                |
+ |    *           |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+
+//T/////////////////////////////////////////////////////////////////////////////////
+paul@daikon:~$ ./a.out 16 <<< tt
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |            *   |
+ |                |
+ |              * |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< ta
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |            *   |
+ |                |
+ |      *         |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< tc
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |      *         |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |            *   |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+paul@daikon:~$ ./a.out 16 <<< tg
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |              * |
+ |                |
+ |                |
+ |                |
+ |                |
+ |                |
+ |            *   |
+ |                |
+ |                |
+ |                |
+ |                |
+A+----------------+T
+
+
+
+
+
+
+
+
+//TESTING EXAMPLES//////////////////////////////////////////////////////////////////	
+
+//directing string gaattc into cgr and showing output.
+
+paul@daikon:~$ ./a.out 16 <<< "gaattc"
+C+----------------+G
+ |                |
+ |                |
+ |                |
+ |            *   |
+ |                |
+ |                |
+ |                |
+ |      *         |
+ |                |
+ |      *         |
+ |                |
+ |                |
+ |   *            |
+ |                |
+ |         *      |
+ |            *   |
+A+----------------+T
+
+//running cgr with HUMLDLR18_raw.txt, outputting to new1.txt, running on diff on 
+//new1.txt and HUMLDLR18_plot.txt to show no difference
+
+paul@daikon:~$ ./a.out 64 < HUMLDLR18_raw.txt > new1.txt
+paul@daikon:~$ diff new1.txt HUMLDLR18_plot.txt 
+paul@daikon:~$ 
+
+//running cgr with HUMHBB_raw.txt, outputting to new1.txt, running on diff on 
+//new1.txt and HUMHBB_plot.txt to show no difference
+
+paul@daikon:~$ ./a.out 64 < HUMHBB_raw.txt > new2.txt
+paul@daikon:~$ diff new2.txt HUMHBB_plot.txt 
+paul@daikon:~$ 
+
+
